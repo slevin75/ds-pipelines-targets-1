@@ -3,7 +3,7 @@
 #text file to the same output folder - wasn't sure where to save that in our directory structure.
 
 
-plot_data<-function(eval_data, outdir, fname_plot,fname_txt, width, height,res,units){
+plot_data<-function(eval_data, outdir, fname_plot, width, height,res,units){
   
   # Create a plot
   png(file = file.path(outdir, fname_plot), width=width, height=height , res=res, units=units)
