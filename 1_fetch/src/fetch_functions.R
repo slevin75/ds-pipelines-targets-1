@@ -2,10 +2,10 @@
 
 #function to download raw data from Science Base
 
-download_data<-function(){
-  mendota_file <- file.path( '1_fetch/out/model_RMSEs.csv')
-  item_file_download('5d925066e4b0c4f70d0d0599', names = 'me_RMSE.csv', destinations = mendota_file, overwrite_file = TRUE)
-  data<-read.csv(mendota_file)
+download_data<-function(outdir,fname,sb_id,item_name){
+  data_file <- file.path( outdir, 'model_RMSEs.csv')
+  item_file_download(sb_id, names = item_name, destinations = data_file, overwrite_file = TRUE)
+  data<-read.csv(data_file)
 
 }
 

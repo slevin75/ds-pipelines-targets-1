@@ -3,24 +3,23 @@
 
 
 # Prepare the data for plotting
-process_data<-function(data){
+##shapes and colors are assumed to be the same length as the different model types here.  
+
+
+process_data<-function(data,outdir, fname, colors,shapes){
  eval_data <- data %>%
   filter(str_detect(exper_id, 'similar_[0-9]+')) %>%
   mutate(col = case_when(
-    model_type == 'pb' ~ '#1b9e77',
-    model_type == 'dl' ~'#d95f02',
-    model_type == 'pgdl' ~ '#7570b3'
+    model_type == 'pb' ~ colors[1],
+    model_type == 'dl' ~colors[2],
+    model_type == 'pgdl' ~ colors[3]
   ), pch = case_when(
-    model_type == 'pb' ~ 21,
-    model_type == 'dl' ~ 22,
-    model_type == 'pgdl' ~ 23
+    model_type == 'pb' ~ shapes[1],
+    model_type == 'dl' ~ shapes[2],
+    model_type == 'pgdl' ~ shapes[3]
   ), n_prof = as.numeric(str_extract(exper_id, '[0-9]+')))
 
- write_csv(eval_data, file = file.path('./2_process/out/model_summary_results.csv'))
-
+ write_csv(eval_data, file = file.path(outdir, fname))
 
 }  #end function
-
-# Save the processed data
-readr::write_csv(eval_data, file = file.path(project_output_dir, 'model_summary_results.csv'))
 

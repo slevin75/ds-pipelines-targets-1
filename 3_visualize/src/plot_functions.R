@@ -3,16 +3,16 @@
 #text file to the same output folder - wasn't sure where to save that in our directory structure.
 
 
-plot_data<-function(eval_data){
+plot_data<-function(eval_data, outdir, fname_plot,fname_txt, width, height,res,units){
   
   # Create a plot
-  png(file = file.path('./3_visualize/out/figure_1.png'), width = 8, height = 10, res = 200, units = 'in')
+  png(file = file.path(outdir, fname_plot), width=width, height=height , res=res, units=units)
   par(omi = c(0,0,0.05,0.05), mai = c(1,1,0,0), las = 1, mgp = c(2,.5,0), cex = 1.5)
   
   plot(NA, NA, xlim = c(2, 1000), ylim = c(4.7, 0.75),
        ylab = "Test RMSE (°C)", xlab = "Training temperature profiles (#)", log = 'x', axes = FALSE)
   
-  n_profs <- c(2, 10, 50, 100, 500, 980)
+  n_profs <- sort(unique(eval_data$n_prof))
   
   axis(1, at = c(-100, n_profs, 1e10), labels = c("", n_profs, ""), tck = -0.01)
   axis(2, at = seq(0,10), las = 1, tck = -0.01)
@@ -64,11 +64,8 @@ plot_data<-function(eval_data){
   ({{dl_500mean}} and {{pb_500mean}}°C, respectively) or more, but worse than PB when training was reduced to 100 profiles ({{dl_100mean}} and {{pb_100mean}}°C respectively) or fewer.
   The PGDL prediction accuracy was more robust compared to PB when only two profiles were provided for training ({{pgdl_2mean}} and {{pb_2mean}}°C, respectively). '
   
-  whisker.render(template_1 %>% str_remove_all('\n') %>% str_replace_all('  ', ' '), render_data ) %>% cat(file = file.path('./3_visualize/out/model_diagnostic_text.txt'))
-  
-  
-  
-  
-  
+  whisker.render(template_1 %>% str_remove_all('\n') %>% str_replace_all('  ', ' '), render_data ) %>% cat(file = file.path(outdir,fname_txt))
   
 }
+
+
