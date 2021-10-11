@@ -12,31 +12,33 @@ list(
   # Get the data from ScienceBase
   tar_target(
     model_RMSEs_csv,
-    download_data(outdir="1_fetch/out",fname= "model_RMSE.csv",sb_id='5d925066e4b0c4f70d0d0599',item_name='me_RMSE.csv'),
+    download_data(outdir="1_fetch/out",fname= "model_RMSEs.csv",sb_id='5d925066e4b0c4f70d0d0599',item_name='me_RMSE.csv'),
     format = "file"
   ), 
-  # Prepare the data for plotting
+  # Prepare the data for plotting 
   tar_target(
     eval_data,
-    process_data(data=eval_data,outdir='2_process/out', fname='model_summary_results.csv', 
+    process_data(data=model_RMSEs_csv, 
                  colors=c('#1b9e77','#d95f02','#7570b3'),shapes=c(21,22,23)),
-  ),
-  # Create a plot
-  tar_target(
-    figure_1_png,
-    make_plot(out_filepath = "3_visualize/out/figure_1.png", data = eval_data), 
-    format = "file"
   ),
   # Save the processed data
   tar_target(
     model_summary_results_csv,
-    write_csv(eval_data, file = "model_summary_results.csv"), 
+    write_csv_return_path(eval_data, outdir='2_process/out',fname="model_summary_results.csv"),
     format = "file"
   ),
+  
+  # Create a plot
+  tar_target(
+    figure_1_png,
+    plot_data(eval_data = eval_data, outdir = "3_visualize/out",fname="figure_1.png",width=8,height=10,res=200,units="in" ), 
+    format = "file"
+  ),
+
   # Save the model diagnostics
   tar_target(
     model_diagnostic_text_txt,
-    generate_model_diagnostics(out_filepath = "model_diagnostic_text.txt", data = eval_data), 
+    make_diagnostics_file(eval_data = eval_data, outdir="3_visualize/out" ,fname= "model_diagnostic_text.txt" ), 
     format = "file"
   )
 )

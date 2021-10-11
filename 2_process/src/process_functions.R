@@ -6,8 +6,9 @@
 ##shapes and colors are assumed to be the same length as the different model types here.  
 
 
-process_data<-function(data,outdir, fname, colors,shapes){
- eval_data <- data %>%
+process_data<-function(data, colors,shapes){
+  
+ eval_data <- read.csv(data) %>%
   filter(str_detect(exper_id, 'similar_[0-9]+')) %>%
   mutate(col = case_when(
     model_type == 'pb' ~ colors[1],
@@ -19,7 +20,13 @@ process_data<-function(data,outdir, fname, colors,shapes){
     model_type == 'pgdl' ~ shapes[3]
   ), n_prof = as.numeric(str_extract(exper_id, '[0-9]+')))
 
- write_csv(eval_data, file = file.path(outdir, fname))
+
 
 }  #end function
 
+
+write_csv_return_path<-function(data, outdir,fname){
+  write_csv(data,file=file.path(outdir,fname))
+  return(file.path(outdir,fname))
+  
+}

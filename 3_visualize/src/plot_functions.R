@@ -47,6 +47,7 @@ plot_data<-function(eval_data, outdir, fname_plot, width, height,res,units){
   text(2.3, 1.1, 'Process-Based', pos = 4, cex = 1.1)
   
   dev.off()
+  return(file.path(outdir, fname_plot))
 }
 
 
@@ -59,7 +60,7 @@ filter_function<-function(data,model_type,exper_id,roundto){
 
 
 
-make_diagnostics_file<-function(data,outdir,fname){
+make_diagnostics_file<-function(eval_data,outdir,fname){
   # Save the model diagnostics
   render_data <- list(pgdl_980mean = filter_function(eval_data,'pgdl', "similar_980",2),
                       dl_980mean = filter_function(eval_data, 'dl', "similar_980",2),
@@ -77,6 +78,6 @@ make_diagnostics_file<-function(data,outdir,fname){
   The PGDL prediction accuracy was more robust compared to PB when only two profiles were provided for training ({{pgdl_2mean}} and {{pb_2mean}}°C, respectively). '
   
   whisker.render(template_1 %>% str_remove_all('\n') %>% str_replace_all('  ', ' '), render_data ) %>% cat(file = file.path(outdir,fname))
-  
+  return(file.path(outdir,fname))
   
 }
