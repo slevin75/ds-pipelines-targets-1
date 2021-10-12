@@ -54,8 +54,8 @@ plot_data<-function(eval_data, outdir, fname_plot, width, height,res,units){
 
 
 
-filter_function<-function(data,model_type,exper_id,roundto){
-  filter(data, model_type == model_type, exper_id ==exper_id) %>% pull(rmse) %>% mean %>% round(roundto)
+filter_function<-function(data,mod_type,exper,roundto){
+  filter(data, model_type == mod_type, exper_id ==exper) %>% pull(rmse) %>% mean %>% round(roundto)
 }
 
 
